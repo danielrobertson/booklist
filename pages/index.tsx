@@ -5,8 +5,8 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Booklist</title>
+        <link rel="icon" href="/book.ico" />
       </Head>
 
       <main className="flex w-full flex-1 flex-col items-center justify-start px-20 pt-20 text-center">
