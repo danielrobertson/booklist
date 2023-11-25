@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
 import { Red_Hat_Display } from 'next/font/google'
-import { Theme } from '@radix-ui/themes';
-import '@radix-ui/themes/styles.css';
+import '@radix-ui/themes/styles.css'
 import './globals.css'
 
-const redHatDisplay = Red_Hat_Display({ subsets: ['latin'] })
+const redHatDisplay = Red_Hat_Display({
+  subsets: ['latin'],
+  variable: '--font-redHatDisplay',
+})
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -18,9 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-       <Theme>
       <body className={redHatDisplay.className}>{children}</body>
-      </Theme>
     </html>
   )
 }
