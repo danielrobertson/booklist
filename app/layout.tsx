@@ -5,6 +5,7 @@ import './globals.css'
 
 const redHatDisplay = Red_Hat_Display({
   subsets: ['latin'],
+  display: 'swap',
   variable: '--font-redHatDisplay',
 })
 
@@ -20,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={redHatDisplay.className}>{children}</body>
+      <body className={redHatDisplay.variable}>{children}</body>
     </html>
   )
 }
