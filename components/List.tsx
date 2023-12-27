@@ -1,26 +1,50 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Search from './Search'
 
 type Props = {
   listId: bigint
 }
 
+const GOOGLE_VOLUME_API = 'https://www.googleapis.com/books/v1/volumes'
+
 function List({ listId }: Props) {
-  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set())
-  console.log('🚀 ~ file: List.tsx:10 ~ List ~ selectedItems:', selectedItems)
+  const [googleBookIds, setGoogleBookIds] = useState<Set<string>>(new Set())
+  const [googleBooks, setGoogleBooks] = useState([])
+
+  useEffect(() => {
+    Promise.all(
+      Array.from(googleBookIds).map(async (id) => {
+        const response = await fetch(`${GOOGLE_VOLUME_API}/${id}`)
+        const data = await response.json()
+        return data
+      }),
+    ).then((data) => {
+      console.log(data)
+      setGoogleBooks(data)
+    })
+  }, [googleBookIds])
 
   return (
     <>
       <Search
         listId={listId}
-        selectedItems={selectedItems}
-        setSelectedItems={setSelectedItems}
+        selectedItems={googleBookIds}
+        setSelectedItems={setGoogleBookIds}
       />
-      <ul>
-        {Array.from(selectedItems).map((id) => (
-          <li key={id}>{id}</li>
+      <ul className="mt-3">
+        {Array.from(googleBooks).map((googleBook: any) => (
+          <li key={googleBook.id}>
+            <img
+              className="ml-2 inline-block h-32 rounded"
+              src={googleBook.volumeInfo.imageLinks.smallThumbnail}
+              alt=""
+            />
+            <span className="ml-2 font-medium">
+              {googleBook.volumeInfo.title}
+            </span>
+          </li>
         ))}
       </ul>
     </>
