@@ -5,6 +5,8 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 import Search from '../components/Search'
+import { useState } from 'react'
+import List from '../components/List'
 
 export default async function Home() {
   const newList = await prisma.lists.create({})
@@ -50,7 +52,8 @@ export default async function Home() {
           <span>{copyableUrl}</span>
         </Button>
         <div className="mt-4 text-sm font-medium">Add books</div>
-        <Search />
+
+        <List />
       </main>
     </Theme>
   )
