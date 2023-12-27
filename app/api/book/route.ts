@@ -39,7 +39,7 @@ export async function POST(request: Request) {
   const foundXref = await prisma.book_list_xref.findFirst({
     where: {
       list_id: list_id,
-      book_id: bookId,
+      book_id: bookId as bigint,
     },
   });
 
@@ -52,7 +52,7 @@ export async function POST(request: Request) {
       xref = await prisma.book_list_xref.create({
         data: {
           list_id,
-          book_id: bookId,
+          book_id: bookId as bigint,
         },
       });
     } catch (error) {
@@ -61,6 +61,5 @@ export async function POST(request: Request) {
     }
   }
 
-  console.log('🚀 ~ file: route.ts:41 ~ POST ~ xref:', xref);
   return Response.json({ data: xref });
 }

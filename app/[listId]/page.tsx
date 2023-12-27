@@ -33,6 +33,7 @@ export default async function ListPage({
   );
 
   const googleBooks = await Promise.all(
+    // @ts-ignore
     list?.book_list_xref.map(async (xref) => {
       const bookId = xref.books?.google_book_id;
       const response = await fetch(`${GOOGLE_VOLUME_API}/${bookId}`);
@@ -66,7 +67,7 @@ export default async function ListPage({
           {Array.from(googleBooks).map((googleBook: any) => (
             <li key={googleBook.id}>
               <a
-                href={googleBook.volumeInfo.infoLink}
+                href={googleBook.volumeInfo.previewLink}
                 className="flex items-start gap-2 mb-3 bg-gray-100 rounded shadow"
                 target="_blank"
               >
