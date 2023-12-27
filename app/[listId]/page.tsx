@@ -25,10 +25,6 @@ export default async function ListPage({
       },
     },
   });
-  console.log(
-    '🚀 ~ file: page.tsx:19 ~ ListPage ~ list:',
-    list?.book_list_xref,
-  );
 
   const googleBooks = await Promise.all(
     // @ts-ignore
@@ -66,7 +62,7 @@ export default async function ListPage({
             <li key={googleBook.id}>
               <a
                 href={googleBook.volumeInfo.previewLink}
-                className="flex items-start gap-2 mb-3 bg-gray-100 rounded shadow"
+                className="flex items-start gap-2 mb-3 bg-zinc-50 hover:bg-zinc-100 rounded shadow"
                 target="_blank"
               >
                 <Image

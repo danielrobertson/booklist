@@ -40,7 +40,7 @@ function List({ listId }: Props) {
         <ul className="mt-3">
           {Array.from(googleBooks).map((googleBook: any) => (
             <li
-              className="flex items-start gap-2 mb-3 bg-gray-100 rounded shadow"
+              className="flex items-start gap-2 mb-3 bg-zinc-50 rounded shadow"
               key={googleBook.id}
             >
               <Image
