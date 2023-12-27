@@ -3,14 +3,18 @@
 import React, { useState } from 'react'
 import Search from './Search'
 
-type Props = {}
+type Props = {
+  listId: bigint
+}
 
-function List({}: Props) {
+function List({ listId }: Props) {
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set())
   console.log('🚀 ~ file: List.tsx:10 ~ List ~ selectedItems:', selectedItems)
+
   return (
     <>
       <Search
+        listId={listId}
         selectedItems={selectedItems}
         setSelectedItems={setSelectedItems}
       />

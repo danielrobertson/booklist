@@ -9,8 +9,8 @@ import { useState } from 'react'
 import List from '../components/List'
 
 export default async function Home() {
-  const newList = await prisma.lists.create({})
-  const copyableUrl = `book-list.io/${newList.list_id}`
+  const { list_id: listId, id } = await prisma.lists.create({})
+  const copyableUrl = `book-list.io/${listId}`
 
   return (
     <Theme>
@@ -53,7 +53,7 @@ export default async function Home() {
         </Button>
         <div className="mt-4 text-sm font-medium">Add books</div>
 
-        <List />
+        <List listId={id} />
       </main>
     </Theme>
   )

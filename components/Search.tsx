@@ -34,9 +34,10 @@ const GOOGLE_BOOKS_API = 'https://www.googleapis.com/books/v1/volumes'
 type Props = {
   selectedItems: Set<string>
   setSelectedItems: (newSet: Set<string>) => void
+  listId: bigint
 }
 
-function Search({ selectedItems, setSelectedItems }: Props) {
+function Search({ selectedItems, setSelectedItems, listId }: Props) {
   const [value, setValue] = useState('')
   const debouncedValue = useDebounce<string>(value, 500)
   const [results, setResults] = useState([])
@@ -58,10 +59,6 @@ function Search({ selectedItems, setSelectedItems }: Props) {
       setResults(data.items)
 
       if (data.items.length > 0) {
-        console.log(
-          '🚀 ~ file: Search.tsx:41 ~ fetchBooks ~ data.items.length:',
-          data.items.length,
-        )
         setIsOpen(true)
       }
     }
@@ -72,12 +69,24 @@ function Search({ selectedItems, setSelectedItems }: Props) {
   }, [debouncedValue])
 
   const toggleCheckbox = (itemId: string) => {
+    console.log('🚀 ~ file: Search.tsx:78 ~ toggleCheckbox ~ itemId:', itemId)
     setSelectedItems((prev) => {
       const newSet = new Set(prev)
       if (newSet.has(itemId)) {
         newSet.delete(itemId)
       } else {
         newSet.add(itemId)
+        BigInt.prototype.toJSON = function () {
+          const int = Number.parseInt(this.toString())
+          return int ?? this.toString()
+        }
+        fetch('/api/book', {
+          method: 'POST',
+          body: JSON.stringify({
+            google_book_id: itemId,
+            list_id: listId,
+          }),
+        }).catch((err) => console.error(err))
       }
       return newSet
     })
