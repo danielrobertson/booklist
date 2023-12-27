@@ -29,7 +29,7 @@ export default async function Home() {
       </header>
 
       <main className="mt-8 mx-auto max-w-lg px-4 sm:px-6 lg:px-8">
-        <ShareLinkButton listId={listId} />
+        <ShareLinkButton listId={listId || ''} />
         <List listId={id} />
       </main>
     </Theme>

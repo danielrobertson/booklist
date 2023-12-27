@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@radix-ui/themes';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 type Props = {
   listId: string;
@@ -9,11 +9,18 @@ type Props = {
 
 function ShareLinkButton({ listId }: Props) {
   const [isCopied, setIsCopied] = useState(false);
-  const copyableUrl = `${window.location.host}/${listId}`;
+  const [url, setUrl] = useState(`book-list.io/${listId}`);
+
+  useEffect(() => {
+    const copyableUrl = `${window.location.host}/${listId}`;
+    if (copyableUrl !== url) {
+      setUrl(copyableUrl);
+    }
+  }, [listId]);
 
   const handleClick = () => {
     navigator.clipboard
-      .writeText(copyableUrl)
+      .writeText(url)
       .then(() => setIsCopied(true))
       .catch(function (err) {
         console.error('Error in copying text: ', err);
@@ -60,7 +67,7 @@ function ShareLinkButton({ listId }: Props) {
             ></path>
           </svg>
         )}
-        <span className="text-sm line-clamp-1">{copyableUrl}</span>
+        <span className="text-sm line-clamp-1">{url}</span>
       </Button>
       {isCopied && (
         <div className="absolute bottom-0 left-0 text-xs text-zinc-600">
