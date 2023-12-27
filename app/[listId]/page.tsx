@@ -1,9 +1,7 @@
 import Head from 'next/head';
 import Image from 'next/image';
-import { Button, Theme } from '@radix-ui/themes';
+import { Theme } from '@radix-ui/themes';
 import prisma from '../../prisma/db';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 const GOOGLE_VOLUME_API = 'https://www.googleapis.com/books/v1/volumes';
 

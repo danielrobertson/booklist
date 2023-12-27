@@ -13,8 +13,8 @@ export default async function Home() {
   return (
     <Theme>
       <Head>
-        <title>Booklist</title>
-        <link rel="icon" href="/book.ico" />
+        <title>Booklists</title>
+        <link rel="icon" href="/logo.png" />
       </Head>
       <header className="flex items-center justify-center px-5 py-2 mt-7">
         <Image
