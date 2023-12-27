@@ -76,10 +76,12 @@ function Search({ selectedItems, setSelectedItems, listId }: Props) {
         newSet.delete(itemId)
       } else {
         newSet.add(itemId)
+
         BigInt.prototype.toJSON = function () {
           const int = Number.parseInt(this.toString())
           return int ?? this.toString()
         }
+
         fetch('/api/book', {
           method: 'POST',
           body: JSON.stringify({
