@@ -25,6 +25,8 @@ export default async function Home() {
           alt="Book"
           width={80}
           height={80}
+          loading="eager"
+          priority={true}
         />
         <h1 className="ml-1 text-2xl font-bold">Booklists</h1>
       </header>

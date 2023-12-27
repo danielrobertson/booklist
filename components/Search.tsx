@@ -1,98 +1,104 @@
-'use client'
+'use client';
 
-import React, { useEffect, useRef, useState } from 'react'
-import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
-import { TextField } from '@radix-ui/themes'
-import { useDebounce } from 'usehooks-ts'
+import React, { useEffect, useRef, useState } from 'react';
+import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
+import { TextField } from '@radix-ui/themes';
+import { useDebounce } from 'usehooks-ts';
 
 function useEscapeKey(callback: any) {
   useEffect(() => {
     function handleEscape(event: any) {
       if (event.key === 'Escape') {
-        callback()
+        callback();
       }
     }
-    document.addEventListener('keydown', handleEscape)
-    return () => document.removeEventListener('keydown', handleEscape)
-  }, [callback])
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [callback]);
 }
 
 function useOutsideClick(ref: any, callback: any) {
   useEffect(() => {
     function handleClickOutside(event: any) {
       if (ref.current && !ref.current.contains(event.target)) {
-        callback()
+        callback();
       }
     }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [ref, callback])
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [ref, callback]);
 }
 
-const GOOGLE_BOOKS_API = 'https://www.googleapis.com/books/v1/volumes'
+// @ts-ignore
+BigInt.prototype.toJSON = function () {
+  const int = Number.parseInt(this.toString());
+  return int ?? this.toString();
+};
+
+const GOOGLE_BOOKS_API = 'https://www.googleapis.com/books/v1/volumes';
 
 type Props = {
-  selectedItems: Set<string>
-  setSelectedItems: (newSet: Set<string>) => void
-  listId: bigint
-}
+  selectedItems: Set<string>;
+  setSelectedItems: React.Dispatch<React.SetStateAction<Set<string>>>;
+  listId: bigint;
+};
 
 function Search({ selectedItems, setSelectedItems, listId }: Props) {
-  const [value, setValue] = useState('')
-  const debouncedValue = useDebounce<string>(value, 500)
-  const [results, setResults] = useState([])
-  const [isOpen, setIsOpen] = useState(false)
+  const [value, setValue] = useState('');
+  const debouncedValue = useDebounce<string>(value, 500);
+  const [results, setResults] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const resultsRef = useRef(null)
-  useOutsideClick(resultsRef, () => setIsOpen(false))
-  useEscapeKey(() => setIsOpen(false))
+  const resultsRef = useRef(null);
+  useOutsideClick(resultsRef, () => {
+    setIsOpen(false);
+    setValue('');
+  });
+  useEscapeKey(() => {
+    setIsOpen(false);
+    setValue('');
+  });
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value)
-  }
+    setValue(e.target.value);
+  };
 
   useEffect(() => {
     const fetchBooks = async () => {
-      const response = await fetch(`${GOOGLE_BOOKS_API}?q=${debouncedValue}`)
-      const data = await response.json()
-      console.log(data.items)
-      setResults(data.items)
+      const response = await fetch(`${GOOGLE_BOOKS_API}?q=${debouncedValue}`);
+      const data = await response.json();
+      console.log(data.items);
+      setResults(data.items);
 
       if (data.items.length > 0) {
-        setIsOpen(true)
+        setIsOpen(true);
       }
-    }
+    };
 
     if (debouncedValue?.length > 0) {
-      fetchBooks()
+      fetchBooks();
     }
-  }, [debouncedValue])
+  }, [debouncedValue]);
 
   const toggleCheckbox = (itemId: string) => {
-    console.log('🚀 ~ file: Search.tsx:78 ~ toggleCheckbox ~ itemId:', itemId)
-    setSelectedItems((prev) => {
-      const newSet = new Set(prev)
+    console.log('🚀 ~ file: Search.tsx:78 ~ toggleCheckbox ~ itemId:', itemId);
+    setSelectedItems((prev: Set<string>) => {
+      const newSet = new Set(prev);
       if (newSet.has(itemId)) {
-        newSet.delete(itemId)
+        newSet.delete(itemId);
       } else {
-        newSet.add(itemId)
-
-        BigInt.prototype.toJSON = function () {
-          const int = Number.parseInt(this.toString())
-          return int ?? this.toString()
-        }
-
+        newSet.add(itemId);
         fetch('/api/book', {
           method: 'POST',
           body: JSON.stringify({
             google_book_id: itemId,
             list_id: listId,
           }),
-        }).catch((err) => console.error(err))
+        }).catch((err) => console.error(err));
       }
-      return newSet
-    })
-  }
+      return newSet;
+    });
+  };
 
   return (
     <>
@@ -102,6 +108,7 @@ function Search({ selectedItems, setSelectedItems, listId }: Props) {
         </TextField.Slot>
         <TextField.Input
           size="3"
+          value={value}
           onChange={onChange}
           placeholder="Search books…"
         />
@@ -131,7 +138,7 @@ function Search({ selectedItems, setSelectedItems, listId }: Props) {
         )}
       </div>
     </>
-  )
+  );
 }
 
-export default Search
+export default Search;

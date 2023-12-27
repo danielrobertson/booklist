@@ -1,30 +1,30 @@
-'use client'
+'use client';
 
-import React, { useEffect, useState } from 'react'
-import Search from './Search'
+import React, { useEffect, useState } from 'react';
+import Search from './Search';
 
 type Props = {
-  listId: bigint
-}
+  listId: bigint;
+};
 
-const GOOGLE_VOLUME_API = 'https://www.googleapis.com/books/v1/volumes'
+const GOOGLE_VOLUME_API = 'https://www.googleapis.com/books/v1/volumes';
 
 function List({ listId }: Props) {
-  const [googleBookIds, setGoogleBookIds] = useState<Set<string>>(new Set())
-  const [googleBooks, setGoogleBooks] = useState([])
+  const [googleBookIds, setGoogleBookIds] = useState<Set<string>>(new Set());
+  const [googleBooks, setGoogleBooks] = useState([]);
 
   useEffect(() => {
     Promise.all(
       Array.from(googleBookIds).map(async (id) => {
-        const response = await fetch(`${GOOGLE_VOLUME_API}/${id}`)
-        const data = await response.json()
-        return data
+        const response = await fetch(`${GOOGLE_VOLUME_API}/${id}`);
+        const data = await response.json();
+        return data;
       }),
     ).then((data) => {
-      console.log(data)
-      setGoogleBooks(data)
-    })
-  }, [googleBookIds])
+      console.log(data);
+      setGoogleBooks(data as any);
+    });
+  }, [googleBookIds]);
 
   return (
     <>
@@ -48,7 +48,7 @@ function List({ listId }: Props) {
         ))}
       </ul>
     </>
-  )
+  );
 }
 
-export default List
+export default List;
