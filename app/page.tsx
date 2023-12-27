@@ -1,16 +1,16 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Theme } from '@radix-ui/themes'
-import { PrismaClient } from '@prisma/client'
+import Head from 'next/head';
+import Image from 'next/image';
+import { Theme } from '@radix-ui/themes';
+import { PrismaClient } from '@prisma/client';
 
-import ShareLinkButton from '../components/ShareLinkButton'
-import List from '../components/List'
+import ShareLinkButton from '../components/ShareLinkButton';
+import List from '../components/List';
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 export default async function Home() {
-  const { list_id: listId, id } = await prisma.lists.create({})
-  const copyableUrl = `book-list.io/${listId}`
+  const { list_id: listId, id } = await prisma.lists.create({});
+  const copyableUrl = `book-list.io/${listId}`;
 
   return (
     <Theme>
@@ -32,11 +32,9 @@ export default async function Home() {
       </header>
 
       <main className="mt-8 mx-auto max-w-lg px-4 sm:px-6 lg:px-8">
-        <div className="text-sm font-medium">Share link</div>
         <ShareLinkButton copyableUrl={copyableUrl} />
-        <div className="mt-4 text-sm font-medium">Add books</div>
         <List listId={id} />
       </main>
     </Theme>
-  )
+  );
 }

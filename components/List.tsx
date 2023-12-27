@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
+
 import Search from './Search';
 
 type Props = {
@@ -28,6 +30,7 @@ function List({ listId }: Props) {
 
   return (
     <>
+      <div className="mt-4 text-sm font-medium">Add books</div>
       <Search
         listId={listId}
         selectedItems={googleBookIds}
@@ -36,20 +39,28 @@ function List({ listId }: Props) {
       {googleBooks.length > 0 ? (
         <ul className="mt-3">
           {Array.from(googleBooks).map((googleBook: any) => (
-            <li key={googleBook.id}>
-              <img
-                className="ml-2 inline-block h-32 rounded"
+            <li
+              className="flex items-start gap-2 mb-3 bg-gray-100 rounded shadow-2xl"
+              key={googleBook.id}
+            >
+              <Image
+                className="w-auto inline-block h-32 rounded"
                 src={googleBook.volumeInfo.imageLinks.smallThumbnail}
-                alt=""
+                alt={googleBook.volumeInfo.title}
+                width={85}
+                height={128}
               />
-              <span className="ml-2 font-medium">
+              <div className="ml-2 mt-8 font-medium">
                 {googleBook.volumeInfo.title}
-              </span>
+                <div className="text-xs text-zinc-500">
+                  {googleBook.volumeInfo.authors[0] || ''}
+                </div>
+              </div>
             </li>
           ))}
         </ul>
       ) : (
-        <div className="text-center text-sm mt-16">
+        <div className="text-center text-sm mt-16 text-zinc-600">
           Nothing here yet.
           <br />
           Add some books!

@@ -113,14 +113,14 @@ function Search({ selectedItems, setSelectedItems, listId }: Props) {
           placeholder="Search books…"
         />
       </TextField.Root>
-      <div>
+      <div className="relative">
         {isOpen && (
           <div
             ref={resultsRef}
-            className="absolute bg-white max-h-52 overflow-y-auto shadow-md p-3 mt-1 border border-zinc-300 rounded"
+            className="absolute bg-white max-h-52 overflow-y-auto shadow-md px-3 mt-1 border border-zinc-300 rounded"
           >
             {results.map((item: any) => (
-              <div key={item.id} className="py-1">
+              <div key={item.id} className="py-1 flex items-center">
                 <input
                   type="checkbox"
                   checked={selectedItems.has(item.id)}
@@ -129,7 +129,7 @@ function Search({ selectedItems, setSelectedItems, listId }: Props) {
                 <img
                   className="ml-2 inline-block h-12 rounded"
                   src={item.volumeInfo.imageLinks?.thumbnail}
-                  alt=""
+                  alt={item.volumeInfo.title}
                 />
                 <span className="ml-2">{item.volumeInfo.title}</span>
               </div>
