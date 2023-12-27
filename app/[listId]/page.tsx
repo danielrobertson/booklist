@@ -1,18 +1,16 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Button, Theme } from '@radix-ui/themes'
-import { PrismaClient } from '@prisma/client'
-import { useRouter } from 'next/router'
-import { useState } from 'react'
-
-const prisma = new PrismaClient()
+import Head from 'next/head';
+import Image from 'next/image';
+import { Button, Theme } from '@radix-ui/themes';
+import prisma from '../../prisma/db';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 export default async function ListPage({
   params,
 }: {
-  params: { listId: string }
+  params: { listId: string };
 }) {
-  const listId = params.listId
+  const listId = params.listId;
 
   // prisma query book_list_xref join list_id from lists table where list_id = listId
   const list = await prisma.lists.findFirst({
@@ -26,8 +24,11 @@ export default async function ListPage({
         },
       },
     },
-  })
-  console.log('🚀 ~ file: page.tsx:19 ~ ListPage ~ list:', list?.book_list_xref)
+  });
+  console.log(
+    '🚀 ~ file: page.tsx:19 ~ ListPage ~ list:',
+    list?.book_list_xref,
+  );
 
   return (
     <Theme>
@@ -61,5 +62,5 @@ export default async function ListPage({
         </ul>
       </main>
     </Theme>
-  )
+  );
 }

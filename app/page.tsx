@@ -1,12 +1,10 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import { Theme } from '@radix-ui/themes';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma/db';
 
 import ShareLinkButton from '../components/ShareLinkButton';
 import List from '../components/List';
-
-const prisma = new PrismaClient();
 
 export default async function Home() {
   const { list_id: listId, id } = await prisma.lists.create({});
