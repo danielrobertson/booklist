@@ -32,7 +32,7 @@ function ShareLinkButton({ listId }: Props) {
       <div className="text-sm font-medium">Share link</div>
       <Button
         variant="surface"
-        className="cursor-pointer flex items-center border border-zinc-300 rounded pl-2"
+        className="w-full cursor-pointer flex items-center border border-zinc-300 rounded pl-2"
         onClick={handleClick}
         aria-label="Click to copy shareable link"
       >
@@ -69,7 +69,7 @@ function ShareLinkButton({ listId }: Props) {
             ></path>
           </svg>
         )}
-        <span className="text-sm line-clamp-1">{url}</span>
+        <span className="w-full text-sm truncate">{url}</span>
       </Button>
       {isCopied && (
         <div className="absolute bottom-0 left-0 text-xs text-zinc-600">
