@@ -53,7 +53,9 @@ function List({ listId }: Props) {
               <div className="ml-2 mt-8 font-medium">
                 {googleBook.volumeInfo.title}
                 <div className="text-xs text-zinc-500">
-                  {googleBook.volumeInfo.authors[0] || ''}
+                  {googleBook.volumeInfo.authors
+                    ? googleBook.volumeInfo.authors[0]
+                    : ''}
                 </div>
               </div>
             </li>
