@@ -8,7 +8,6 @@ import List from '../components/List';
 
 export default async function Home() {
   const { list_id: listId, id } = await prisma.lists.create({});
-  const copyableUrl = `book-list.io/${listId}`;
 
   return (
     <Theme>
@@ -30,7 +29,7 @@ export default async function Home() {
       </header>
 
       <main className="mt-8 mx-auto max-w-lg px-4 sm:px-6 lg:px-8">
-        <ShareLinkButton copyableUrl={copyableUrl} />
+        <ShareLinkButton listId={listId} />
         <List listId={id} />
       </main>
     </Theme>

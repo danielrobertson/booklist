@@ -117,7 +117,7 @@ function Search({ selectedItems, setSelectedItems, listId }: Props) {
         {isOpen && (
           <div
             ref={resultsRef}
-            className="absolute bg-white max-h-52 overflow-y-auto shadow-md px-3 mt-1 border border-zinc-300 rounded"
+            className="absolute w-full bg-white max-h-52 overflow-y-auto shadow-md px-3 mt-1 border border-zinc-300 rounded"
           >
             {results.map((item: any) => (
               <div key={item.id} className="py-1 flex items-center">

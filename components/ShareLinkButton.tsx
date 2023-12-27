@@ -4,11 +4,12 @@ import { Button } from '@radix-ui/themes';
 import React, { useState } from 'react';
 
 type Props = {
-  copyableUrl: string;
+  listId: string;
 };
 
-function ShareLinkButton({ copyableUrl }: Props) {
+function ShareLinkButton({ listId }: Props) {
   const [isCopied, setIsCopied] = useState(false);
+  const copyableUrl = `${window.location.host}/${listId}`;
 
   const handleClick = () => {
     navigator.clipboard
