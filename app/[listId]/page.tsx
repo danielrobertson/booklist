@@ -55,7 +55,7 @@ export default async function ListPage({
 
       <main className="mt-8 mx-auto max-w-lg px-4 sm:px-6 lg:px-8">
         <div className="text-xs text-zinc-500 font-semibold">
-          {googleBooks.length} books
+          {googleBooks.length} {googleBooks.length > 1 ? 'books' : 'book'}
         </div>
         <ul className="mt-3">
           {Array.from(googleBooks).map((googleBook: any) => (
