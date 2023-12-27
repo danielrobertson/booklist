@@ -33,20 +33,28 @@ function List({ listId }: Props) {
         selectedItems={googleBookIds}
         setSelectedItems={setGoogleBookIds}
       />
-      <ul className="mt-3">
-        {Array.from(googleBooks).map((googleBook: any) => (
-          <li key={googleBook.id}>
-            <img
-              className="ml-2 inline-block h-32 rounded"
-              src={googleBook.volumeInfo.imageLinks.smallThumbnail}
-              alt=""
-            />
-            <span className="ml-2 font-medium">
-              {googleBook.volumeInfo.title}
-            </span>
-          </li>
-        ))}
-      </ul>
+      {googleBooks.length > 0 ? (
+        <ul className="mt-3">
+          {Array.from(googleBooks).map((googleBook: any) => (
+            <li key={googleBook.id}>
+              <img
+                className="ml-2 inline-block h-32 rounded"
+                src={googleBook.volumeInfo.imageLinks.smallThumbnail}
+                alt=""
+              />
+              <span className="ml-2 font-medium">
+                {googleBook.volumeInfo.title}
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="text-center text-sm mt-16">
+          Nothing here yet.
+          <br />
+          Add some books!
+        </div>
+      )}
     </>
   );
 }
