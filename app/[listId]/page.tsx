@@ -42,14 +42,14 @@ export default async function ListPage({
         <title>Booklist</title>
         <link rel="icon" href="/book.ico" />
       </Head>
-      <header className="max-w-lg mx-auto flex justify-between items-center pt-5 pb-3 px-4">
+      <header className="max-w-lg mx-auto flex justify-between items-center pt-6 pb-3 px-4">
         <div className="flex items-center">
           <Image
             className="rounded-full"
             src="/logo.png"
             alt="Book"
-            width={60}
-            height={60}
+            width={80}
+            height={80}
           />
           <h1 className="ml-1 text-2xl font-bold">Booklists</h1>
         </div>
