@@ -4,19 +4,19 @@ import { Button } from '@radix-ui/themes';
 import React, { useEffect, useState } from 'react';
 
 type Props = {
-  listId: string;
+  externalListId: string;
 };
 
-function ShareLinkButton({ listId }: Props) {
+function ShareLinkButton({ externalListId }: Props) {
   const [isCopied, setIsCopied] = useState(false);
-  const [url, setUrl] = useState(`book-list.io/${listId}`);
+  const [url, setUrl] = useState(`book-list.io/${externalListId}`);
 
   useEffect(() => {
-    const copyableUrl = `${window.location.host}/${listId}`;
+    const copyableUrl = `${window.location.host}/${externalListId}`;
     if (copyableUrl !== url) {
       setUrl(copyableUrl);
     }
-  }, [listId]);
+  }, [externalListId]);
 
   const handleClick = () => {
     navigator.clipboard

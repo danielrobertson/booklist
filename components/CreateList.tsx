@@ -11,7 +11,7 @@ type Props = {
 
 const GOOGLE_VOLUME_API = 'https://www.googleapis.com/books/v1/volumes';
 
-function List({ listId }: Props) {
+function CreateList({ listId }: Props) {
   const [googleBookIds, setGoogleBookIds] = useState<Set<string>>(new Set());
   const [googleBooks, setGoogleBooks] = useState([]);
 
@@ -23,7 +23,6 @@ function List({ listId }: Props) {
         return data;
       }),
     ).then((data) => {
-      console.log(data);
       setGoogleBooks(data as any);
     });
   }, [googleBookIds]);
@@ -72,4 +71,4 @@ function List({ listId }: Props) {
   );
 }
 
-export default List;
+export default CreateList;

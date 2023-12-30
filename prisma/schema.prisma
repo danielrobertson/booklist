@@ -8,33 +8,29 @@ datasource db {
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model book_list_xref {
-  id         BigInt   @default(autoincrement())
+model book {
+  id             BigInt      @id(map: "books_pkey") @unique(map: "books_id_key") @default(autoincrement())
+  created_at     DateTime    @default(now()) @db.Timestamptz(6)
+  google_book_id String      @unique(map: "books_google_book_id_key")
+  list_item      list_item[]
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model list {
+  id          BigInt      @id(map: "lists_pkey") @unique(map: "lists_id_key") @default(autoincrement())
+  created_at  DateTime    @default(now()) @db.Timestamptz(6)
+  external_id String      @unique(map: "lists_external_id_key") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String?
+  description String?
+  list_item   list_item[]
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model list_item {
+  id         BigInt   @id(map: "list_item_pkey") @default(autoincrement())
   created_at DateTime @default(now()) @db.Timestamptz(6)
   list_id    BigInt
   book_id    BigInt
-  books      books    @relation(fields: [book_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  lists      lists    @relation(fields: [list_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-
-  @@id([list_id, book_id])
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model books {
-  id             BigInt           @unique @default(autoincrement())
-  created_at     DateTime         @default(now()) @db.Timestamptz(6)
-  google_book_id String           @unique
-  book_list_xref book_list_xref[]
-
-  @@id([id, google_book_id])
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model lists {
-  id             BigInt           @id @unique @default(autoincrement())
-  created_at     DateTime         @default(now()) @db.Timestamptz(6)
-  list_id        String?          @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name           String?
-  description    String?
-  book_list_xref book_list_xref[]
+  book       book     @relation(fields: [book_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  list       list     @relation(fields: [list_id], references: [id], onDelete: Cascade)
 }

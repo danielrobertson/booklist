@@ -4,10 +4,10 @@ import { Theme } from '@radix-ui/themes';
 import prisma from '../prisma/db';
 
 import ShareLinkButton from '../components/ShareLinkButton';
-import List from '../components/List';
+import CreateList from '../components/CreateList';
 
 export default async function Home() {
-  const { list_id: listId, id } = await prisma.lists.create({});
+  const { external_id: externalListId, id } = await prisma.list.create({});
 
   return (
     <Theme>
@@ -29,8 +29,8 @@ export default async function Home() {
       </header>
 
       <main className="mt-8 mx-auto max-w-lg px-4 sm:px-6 lg:px-8">
-        <ShareLinkButton listId={listId || ''} />
-        <List listId={id} />
+        <ShareLinkButton externalListId={externalListId || ''} />
+        <CreateList listId={id} />
       </main>
     </Theme>
   );

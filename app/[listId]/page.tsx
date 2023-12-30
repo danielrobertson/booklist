@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Image from 'next/image';
-import { Button, Link, Theme } from '@radix-ui/themes';
+import { Link, Theme } from '@radix-ui/themes';
 import prisma from '../../prisma/db';
 
 const GOOGLE_VOLUME_API = 'https://www.googleapis.com/books/v1/volumes';
@@ -11,25 +11,26 @@ export default async function ListPage({
   params: { listId: string };
 }) {
   const listId = params.listId;
+  console.log('🚀 ~ file: page.tsx:14 ~ listId:', listId);
 
-  // prisma query book_list_xref join list_id from lists table where list_id = listId
-  const list = await prisma.lists.findFirst({
+  // prisma query list_item join list_id from lists table where list_id = listId
+  const list = await prisma.list.findFirst({
     where: {
-      list_id: listId,
+      external_id: listId,
     },
     include: {
-      book_list_xref: {
+      list_item: {
         include: {
-          books: true,
+          book: true,
         },
       },
     },
   });
+  console.log('🚀 ~ file: page.tsx:28 ~ list:', list);
 
   const googleBooks = await Promise.all(
-    // @ts-ignore
-    list?.book_list_xref.map(async (xref) => {
-      const bookId = xref.books?.google_book_id;
+    (list?.list_item || []).map(async (xref) => {
+      const bookId = xref.book?.google_book_id;
       const response = await fetch(`${GOOGLE_VOLUME_API}/${bookId}`);
       const data = await response.json();
       return data;
@@ -39,7 +40,7 @@ export default async function ListPage({
   return (
     <Theme>
       <Head>
-        <title>Booklist</title>
+        <title>Booklists</title>
         <link rel="icon" href="/book.ico" />
       </Head>
       <header className="max-w-lg mx-auto flex justify-between items-center pt-6 pb-3 px-4">
