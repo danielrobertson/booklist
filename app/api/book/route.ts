@@ -9,7 +9,7 @@ BigInt.prototype.toJSON = function () {
 
 export async function POST(request: Request) {
   const res = await request.json();
-  console.log('🚀 ~ file: route.ts:12 ~ POST ~ res:', res);
+  console.log('🚀 ~ POST ~ res:', res);
   const { google_book_id, list_id } = res;
 
   let bookId = null;
@@ -19,7 +19,6 @@ export async function POST(request: Request) {
         google_book_id,
       },
     });
-    console.log('🚀 ~ file: route.ts:22 ~ POST ~ created book:', book);
     bookId = book.id;
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -37,31 +36,17 @@ export async function POST(request: Request) {
     }
   }
 
-  let listItemRecord;
-  const foundListItem = await prisma.list_item.findFirst({
+  const result = await prisma.list_item.upsert({
     where: {
-      list_id: list_id,
+      unique_list_book_item: { book_id: bookId as bigint, list_id },
+    },
+    update: {},
+    create: {
       book_id: bookId as bigint,
+      list_id: list_id,
     },
   });
+  console.log('🚀 ~ POST ~ result:', result);
 
-  console.log('🚀 existing listItemRecord:', listItemRecord);
-  if (foundListItem) {
-    listItemRecord = foundListItem;
-  } else {
-    try {
-      listItemRecord = await prisma.list_item.create({
-        data: {
-          list_id,
-          book_id: bookId as bigint,
-        },
-      });
-      console.log('🚀 created listItem ', listItemRecord);
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  }
-
-  return Response.json({ data: listItemRecord });
+  return Response.json({ data: result });
 }
