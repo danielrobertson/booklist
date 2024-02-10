@@ -6,6 +6,8 @@
     "start": "next start"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^4.30.3",
+    "@clerk/nextjs": "^4.29.5",
     "@neondatabase/serverless": "^0.6.1",
     "@prisma/adapter-neon": "^5.8.1",
     "@prisma/client": "^5.7.1",
