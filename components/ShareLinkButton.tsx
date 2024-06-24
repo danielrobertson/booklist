@@ -28,11 +28,10 @@ function ShareLinkButton({ externalListId }: Props) {
   };
 
   return (
-    <div className="relative pb-4">
-      <div className="text-sm font-medium">Share link</div>
+    <div className="relative flex justify-end">
       <Button
-        variant="surface"
-        className="w-full cursor-pointer flex items-center border border-zinc-300 rounded pl-2"
+        variant="ghost"
+        className="cursor-pointer flex items-center border border-zinc-300 rounded pl-2"
         onClick={handleClick}
         aria-label="Click to copy shareable link"
       >
@@ -69,13 +68,8 @@ function ShareLinkButton({ externalListId }: Props) {
             ></path>
           </svg>
         )}
-        <span className="w-full text-sm truncate">{url}</span>
+        <span className="text-sm">{isCopied ? 'Copied' : 'Link'}</span>
       </Button>
-      {isCopied && (
-        <div className="absolute bottom-0 left-0 text-xs text-zinc-600">
-          Copied!
-        </div>
-      )}
     </div>
   );
 }

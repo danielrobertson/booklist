@@ -29,7 +29,7 @@ function CreateList({ listId }: Props) {
 
   return (
     <>
-      <div className="mt-4 text-sm font-medium">Add books</div>
+      <div className="mt-4 text-sm font-medium">Add book</div>
       <Search
         listId={listId}
         selectedItems={googleBookIds}

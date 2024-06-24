@@ -1,15 +1,18 @@
 import Head from 'next/head';
 import Image from 'next/image';
-import { Theme } from '@radix-ui/themes';
+import { TextField, Theme } from '@radix-ui/themes';
 
 import prisma from '../prisma/db';
 
 import ShareLinkButton from '../components/ShareLinkButton';
 import CreateList from '../components/CreateList';
 import UserSignInOutButton from '../components/UserSignInOutButton';
+import { ListName } from '../components/ListNameInput';
+import { generateSlug } from 'random-word-slugs';
 
 export default async function Home() {
   const { external_id: externalListId, id } = await prisma.list.create({});
+  const defaultTitle = generateSlug(3, { format: 'title' });
 
   return (
     <Theme>
@@ -35,6 +38,7 @@ export default async function Home() {
 
       <main className="mt-8 mx-auto max-w-lg px-4 sm:px-6 lg:px-8">
         <ShareLinkButton externalListId={externalListId || ''} />
+        <ListName title={defaultTitle} />
         <CreateList listId={id} />
       </main>
     </Theme>
