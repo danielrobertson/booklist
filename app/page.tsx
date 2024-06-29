@@ -26,7 +26,7 @@ export default async function Home() {
 
             <Link
               href="/lists/create"
-              className="px-6 py-3.5 text-base font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 rounded-lg me-2 mb-2  focus:outline-none"
+              className="text-center block md:inline px-6 py-3 text-base font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 rounded-lg me-2 mb-2 focus:outline-none"
             >
               Create a List
             </Link>
