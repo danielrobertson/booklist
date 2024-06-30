@@ -34,7 +34,7 @@ export default async function Home() {
           <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
             <Image
               className=""
-              src="/book_open.png"
+              src="/books_plant.png"
               alt="Book"
               width={400}
               height={400}
