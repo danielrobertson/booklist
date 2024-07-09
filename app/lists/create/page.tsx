@@ -19,7 +19,7 @@ export default async function CreateListPage() {
         <link rel="icon" href="/logo.png" />
       </Head>
       <Header />
-      <main className="mt-8 mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+      <main className="mt-8 mx-auto max-w-screen-xl px-4">
         <ShareLinkButton externalListId={externalListId || ''} />
         <ListName title={defaultTitle} />
         <CreateList listId={id} />

@@ -1,9 +1,12 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
-import { TextField } from '@radix-ui/themes';
+import useSWR from 'swr';
 import { useDebounce } from 'usehooks-ts';
+import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
+import { TextField, Spinner } from '@radix-ui/themes';
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 function useEscapeKey(callback: any) {
   useEffect(() => {
@@ -46,14 +49,15 @@ type Props = {
 function Search({ selectedItems, setSelectedItems, listId }: Props) {
   const [value, setValue] = useState('');
   const debouncedValue = useDebounce<string>(value, 500);
-  const [results, setResults] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
   const resultsRef = useRef(null);
+
   useOutsideClick(resultsRef, () => {
     setIsOpen(false);
     setValue('');
   });
+
   useEscapeKey(() => {
     setIsOpen(false);
     setValue('');
@@ -63,25 +67,14 @@ function Search({ selectedItems, setSelectedItems, listId }: Props) {
     setValue(e.target.value);
   };
 
-  useEffect(() => {
-    const fetchBooks = async () => {
-      const response = await fetch(`${GOOGLE_BOOKS_API}?q=${debouncedValue}`);
-      const data = await response.json();
-      console.log(data.items);
-      setResults(data.items);
-
-      if (data.items.length > 0) {
-        setIsOpen(true);
-      }
-    };
-
-    if (debouncedValue?.length > 0) {
-      fetchBooks();
-    }
-  }, [debouncedValue]);
+  const { data, error, isLoading } = useSWR(
+    debouncedValue?.length > 0
+      ? `${GOOGLE_BOOKS_API}?q=${debouncedValue}`
+      : null,
+    fetcher,
+  );
 
   const toggleCheckbox = (itemId: string) => {
-    console.log('🚀 ~ file: Search.tsx:78 ~ toggleCheckbox ~ itemId:', itemId);
     setSelectedItems((prev: Set<string>) => {
       const newSet = new Set(prev);
       if (newSet.has(itemId)) {
@@ -100,44 +93,82 @@ function Search({ selectedItems, setSelectedItems, listId }: Props) {
     });
   };
 
+  useEffect(() => {
+    if (debouncedValue?.length > 0) {
+      setIsOpen(true);
+    } else {
+      setIsOpen(false);
+    }
+  }, [debouncedValue]);
+
   return (
-    <>
-      <TextField.Root className="">
-        <TextField.Slot>
-          <MagnifyingGlassIcon height="16" width="16" />
-        </TextField.Slot>
-        <TextField.Input
-          size="3"
-          value={value}
-          onChange={onChange}
-          placeholder="Search books…"
-        />
-      </TextField.Root>
-      <div className="relative">
-        {isOpen && (
-          <div
-            ref={resultsRef}
-            className="absolute w-full bg-white max-h-52 overflow-y-auto shadow-md px-3 mt-1 border border-zinc-300 rounded"
-          >
-            {results.map((item: any) => (
-              <div key={item.id} className="py-1 flex items-center">
-                <input
-                  type="checkbox"
-                  checked={selectedItems.has(item.id)}
-                  onChange={() => toggleCheckbox(item.id)}
-                />
-                <img
-                  className="ml-2 inline-block h-12 rounded"
-                  src={item.volumeInfo.imageLinks?.thumbnail}
-                  alt={item.volumeInfo.title}
-                />
-                <span className="ml-2">{item.volumeInfo.title}</span>
-              </div>
-            ))}
+    <div className="mt-3 relative w-full">
+      <form>
+        <label
+          for="book-search"
+          className="mb-2 text-sm font-medium text-gray-900 sr-only"
+        >
+          Search books to add to list
+        </label>
+        <div className="relative">
+          <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg
+              className="w-4 h-4 text-gray-500 "
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+              />
+            </svg>
           </div>
-        )}
-      </div>
-    </>
+          <input
+            type="search"
+            id="book-search"
+            className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 "
+            placeholder="Search books..."
+            value={value}
+            onChange={onChange}
+          />
+          <button
+            type="submit"
+            className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 "
+          >
+            Search
+          </button>
+        </div>
+      </form>
+
+      {isOpen && (
+        <div
+          ref={resultsRef}
+          className="absolute w-full bg-white max-h-52 overflow-y-auto shadow-md px-3 mt-1 border border-zinc-300 rounded"
+        >
+          {isLoading && <Spinner size="3" />}
+          {data?.items?.map((item: any) => (
+            <div key={item.id} className="py-1 flex items-center">
+              <input
+                type="checkbox"
+                checked={selectedItems.has(item.id)}
+                onChange={() => toggleCheckbox(item.id)}
+              />
+              <img
+                className="ml-2 inline-block h-12 rounded"
+                src={item.volumeInfo.imageLinks?.thumbnail}
+                alt={item.volumeInfo.title}
+              />
+              <span className="ml-2">{item.volumeInfo.title}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
