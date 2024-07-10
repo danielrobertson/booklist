@@ -105,7 +105,7 @@ function Search({ selectedItems, setSelectedItems, listId }: Props) {
     <div className="mt-3 relative w-full">
       <form>
         <label
-          for="book-search"
+          htmlFor="book-search"
           className="mb-2 text-sm font-medium text-gray-900 sr-only"
         >
           Search books to add to list
