@@ -38,14 +38,13 @@ export function ListName({ title }: Props) {
       <div className="text-sm font-medium">List name</div>
       {isEditing ? (
         <form className="flex gap-2 items-center">
-          <TextField.Root>
-            <TextField.Input
-              size="2"
-              value={listName}
-              onChange={handleListNameChange}
-              placeholder={listName}
-            />
-          </TextField.Root>
+          <input
+            id="book-search"
+            className="block p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 "
+            value={listName}
+            onChange={handleListNameChange}
+            placeholder={listName}
+          />
           <IconButton
             variant="solid"
             onClick={handleSaveEditClick}
