@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { Link, Theme } from '@radix-ui/themes';
 import prisma from '../../prisma/db';
+import Header from '../../components/Header';
 
 const GOOGLE_VOLUME_API = 'https://www.googleapis.com/books/v1/volumes';
 
@@ -11,7 +12,6 @@ export default async function ListPage({
   params: { listId: string };
 }) {
   const listId = params.listId;
-  console.log('🚀 ~ file: page.tsx:14 ~ listId:', listId);
 
   // prisma query list_item join list_id from lists table where list_id = listId
   const list = await prisma.list.findFirst({
@@ -26,7 +26,6 @@ export default async function ListPage({
       },
     },
   });
-  console.log('🚀 ~ file: page.tsx:28 ~ list:', list);
 
   const googleBooks = await Promise.all(
     (list?.list_item || []).map(async (xref) => {
@@ -43,63 +42,37 @@ export default async function ListPage({
         <title>Booklists</title>
         <link rel="icon" href="/book.ico" />
       </Head>
-      <header className="max-w-lg mx-auto flex justify-between items-center pt-6 pb-3 px-4">
-        <div className="flex items-center">
-          <Image
-            className="rounded-full"
-            src="/logo.png"
-            alt="Book"
-            width={80}
-            height={80}
-          />
-          <h1 className="ml-1 text-2xl font-bold">Booklists</h1>
-        </div>
-        <Link
-          href="/"
-          className="flex items-center gap-1 font-medium text-zinc-500 hover:text-zinc-600"
-        >
-          <svg
-            width="15"
-            height="15"
-            viewBox="0 0 15 15"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM7.50003 4C7.77617 4 8.00003 4.22386 8.00003 4.5V7H10.5C10.7762 7 11 7.22386 11 7.5C11 7.77614 10.7762 8 10.5 8H8.00003V10.5C8.00003 10.7761 7.77617 11 7.50003 11C7.22389 11 7.00003 10.7761 7.00003 10.5V8H4.50003C4.22389 8 4.00003 7.77614 4.00003 7.5C4.00003 7.22386 4.22389 7 4.50003 7H7.00003V4.5C7.00003 4.22386 7.22389 4 7.50003 4Z"
-              fill="currentColor"
-              fillRule="evenodd"
-              clipRule="evenodd"
-            ></path>
-          </svg>
-          New
-        </Link>
-      </header>
+      <Header />
 
       <main className="mt-8 mx-auto max-w-lg px-4">
+        <h1 className="text-4xl font-extrabold">{list?.name}</h1>
         <div className="text-xs text-zinc-500 font-semibold">
           {googleBooks.length} {googleBooks.length > 1 ? 'books' : 'book'}
         </div>
-        <ul className="mt-3">
+        <ul className="mt-5 max-w-md divide-y divide-gray-200">
           {Array.from(googleBooks).map((googleBook: any) => (
-            <li key={googleBook.id}>
+            <li className="pb-3 sm:pb-4" key={googleBook.id}>
               <a
                 href={googleBook.volumeInfo.previewLink}
-                className="flex items-start gap-2 mb-3 bg-zinc-50 hover:bg-zinc-100 rounded shadow"
+                className="flex items-center space-x-4 rtl:space-x-reverse"
                 target="_blank"
               >
                 <Image
-                  className="w-auto inline-block h-32 rounded"
+                  className="mt-2 w-auto inli`ne-block h-32 rounded"
                   src={googleBook.volumeInfo.imageLinks.smallThumbnail}
                   alt={googleBook.volumeInfo.title}
                   width={85}
                   height={128}
                 />
-                <div className="ml-2 mt-8 font-medium">
-                  {googleBook.volumeInfo.title}
-                  <div className="text-xs text-zinc-500">
-                    {googleBook.volumeInfo.authors[0] || ''}
-                  </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-900 truncate">
+                    {googleBook.volumeInfo.title}
+                  </p>
+                  <p className="text-sm text-gray-500 truncate ">
+                    {googleBook.volumeInfo.authors
+                      ? googleBook.volumeInfo.authors[0]
+                      : ''}
+                  </p>
                 </div>
               </a>
             </li>

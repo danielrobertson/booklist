@@ -36,25 +36,33 @@ function CreateList({ listId }: Props) {
         setSelectedItems={setGoogleBookIds}
       />
       {googleBooks.length > 0 ? (
-        <ul className="mt-3">
+        <ul className="mt-5 divide-y divide-gray-200">
           {Array.from(googleBooks).map((googleBook: any) => (
-            <li
-              className="flex items-start gap-2 mb-3 bg-zinc-50 rounded shadow"
-              key={googleBook.id}
-            >
-              <Image
-                className="w-auto inline-block h-32 rounded"
-                src={googleBook.volumeInfo.imageLinks.smallThumbnail}
-                alt={googleBook.volumeInfo.title}
-                width={85}
-                height={128}
-              />
-              <div className="ml-2 mt-8 font-medium">
-                {googleBook.volumeInfo.title}
-                <div className="text-xs text-zinc-500">
-                  {googleBook.volumeInfo.authors
-                    ? googleBook.volumeInfo.authors[0]
-                    : ''}
+            <li className="pb-3 sm:pb-4" key={googleBook.id}>
+              <div className="flex justify-between">
+                <div className="flex items-center space-x-4 rtl:space-x-reverse">
+                  <div className="flex-shrink-0">
+                    <Image
+                      className="mt-3 w-auto inline-block h-32 rounded"
+                      src={googleBook.volumeInfo.imageLinks.smallThumbnail}
+                      alt={googleBook.volumeInfo.title}
+                      width={85}
+                      height={128}
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-900 truncate">
+                      {googleBook.volumeInfo.title}
+                    </p>
+                    <p className="text-sm text-gray-500 truncate ">
+                      {googleBook.volumeInfo.authors
+                        ? googleBook.volumeInfo.authors[0]
+                        : ''}
+                    </p>
+                  </div>
+                </div>
+                <div className="inline-flex items-center text-base font-semibold text-gray-900">
+                  Remove
                 </div>
               </div>
             </li>
