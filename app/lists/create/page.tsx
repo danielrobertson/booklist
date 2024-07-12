@@ -4,7 +4,7 @@ import { generateSlug } from 'random-word-slugs';
 
 import prisma from '../../../prisma/db';
 import Header from '../../../components/Header';
-import ShareLinkButton from '../../../components/ShareLinkButton';
+import ShareLink from '../../../components/ShareLink';
 import { ListName } from '../../../components/ListNameInput';
 import CreateList from '../../../components/CreateList';
 
@@ -20,8 +20,8 @@ export default async function CreateListPage() {
       </Head>
       <Header />
       <main className="mt-8 mx-auto max-w-screen-xl px-4">
-        <ShareLinkButton externalListId={externalListId || ''} />
         <ListName title={defaultTitle} />
+        <ShareLink externalListId={externalListId || ''} />
         <CreateList listId={id} />
       </main>
     </Theme>
