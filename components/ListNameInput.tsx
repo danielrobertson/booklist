@@ -1,8 +1,8 @@
 'use client';
 
+import React, { useState } from 'react';
 import { CheckIcon, Cross2Icon } from '@radix-ui/react-icons';
-import { TextField, Text, Button, IconButton } from '@radix-ui/themes';
-import React, { useMemo, useState } from 'react';
+import { Text, Button, IconButton } from '@radix-ui/themes';
 
 type Props = {
   title: string;
@@ -13,25 +13,25 @@ export function ListName({ title }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [previousName, setPreviousName] = useState(title);
 
-  function handleListNameChange(
+  const handleListNameChange = (
     event: React.ChangeEvent<HTMLInputElement>,
-  ): void {
+  ): void => {
     setListName(event.target.value);
-  }
+  };
 
-  function handleChangeNameClick(): void {
+  const handleChangeNameClick = (): void => {
     setIsEditing(true);
     setPreviousName(listName);
-  }
+  };
 
-  function handleSaveEditClick(): void {
+  const handleSaveEditClick = (): void => {
     setIsEditing(false);
-  }
+  };
 
-  function handleCancelEditClick(): void {
+  const handleCancelEditClick = (): void => {
     setIsEditing(false);
     setListName(previousName);
-  }
+  };
 
   return (
     <>
