@@ -1,8 +1,8 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import { Link, Theme } from '@radix-ui/themes';
-import prisma from '../../prisma/db';
-import Header from '../../components/Header';
+import prisma from '@/prisma/db';
+import Header from '@/components/Header';
 
 const GOOGLE_VOLUME_API = 'https://www.googleapis.com/books/v1/volumes';
 

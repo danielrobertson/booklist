@@ -3,12 +3,14 @@
 import React, { useState } from 'react';
 import { CheckIcon, Cross2Icon } from '@radix-ui/react-icons';
 import { Text, Button, IconButton } from '@radix-ui/themes';
+import { updateListName } from '@/app/actions';
 
 type Props = {
   title: string;
+  listId: bigint;
 };
 
-export function ListName({ title }: Props) {
+export function ListName({ title, listId }: Props) {
   const [listName, setListName] = useState(title);
   const [isEditing, setIsEditing] = useState(false);
   const [previousName, setPreviousName] = useState(title);
@@ -26,6 +28,7 @@ export function ListName({ title }: Props) {
 
   const handleSaveEditClick = (): void => {
     setIsEditing(false);
+    updateListName(listName, listId);
   };
 
   const handleCancelEditClick = (): void => {
