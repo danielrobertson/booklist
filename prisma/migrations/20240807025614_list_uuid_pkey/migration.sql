@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "list" ALTER COLUMN "id" DROP DEFAULT;

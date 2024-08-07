@@ -19,7 +19,7 @@ model book {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model list {
-  id          String      @id(map: "lists_pkey") @unique(map: "lists_id_key") @default("gen_random_uuid()")
+  id          String      @id(map: "lists_pkey") @unique(map: "lists_id_key") @default(uuid())
   created_at  DateTime    @default(now()) @db.Timestamptz(6)
   name        String?
   description String?
