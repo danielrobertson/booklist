@@ -43,7 +43,7 @@ const GOOGLE_BOOKS_API = 'https://www.googleapis.com/books/v1/volumes';
 type Props = {
   selectedItems: Set<string>;
   setSelectedItems: React.Dispatch<React.SetStateAction<Set<string>>>;
-  listId: bigint;
+  listId: string;
 };
 
 function Search({ selectedItems, setSelectedItems, listId }: Props) {

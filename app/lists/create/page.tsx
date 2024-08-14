@@ -7,23 +7,16 @@ import Header from '@/components/Header';
 import ShareLink from '@/components/ShareLink';
 import { ListName } from '@/components/ListNameInput';
 import CreateList from '@/components/CreateList';
+import { createList } from '@/app/actions';
+import { redirect } from 'next/navigation';
 
 export default async function CreateListPage() {
-  const { external_id: externalListId, id } = await prisma.list.create({});
-  const defaultTitle = generateSlug(3, { format: 'title' });
+  const externalId = await createList();
 
-  return (
-    <Theme>
-      <Head>
-        <title>Booklists</title>
-        <link rel="icon" href="/logo.png" />
-      </Head>
-      <Header />
-      <main className="mt-8 mx-auto max-w-screen-xl px-4">
-        <ListName title={defaultTitle} listId={id} />
-        <ShareLink externalListId={externalListId || ''} />
-        <CreateList listId={id} />
-      </main>
-    </Theme>
-  );
+  if (externalId) {
+    redirect(`/lists/edit/${externalId}`);
+  }
+  // const defaultTitle = generateSlug(3, { format: 'title' });
+
+  return <div>something went wrong creating list</div>;
 }

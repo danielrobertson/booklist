@@ -7,7 +7,7 @@ import { updateListName } from '@/app/actions';
 
 type Props = {
   title: string;
-  listId: bigint;
+  listId: string;
 };
 
 export function ListName({ title, listId }: Props) {
@@ -17,18 +17,16 @@ export function ListName({ title, listId }: Props) {
 
   const handleListNameChange = (
     event: React.ChangeEvent<HTMLInputElement>,
-  ): void => {
-    setListName(event.target.value);
+  ): void => setListName(event.target.value);
+
+  const handleSaveEditClick = (): void => {
+    setIsEditing(false);
+    updateListName(listName, listId);
   };
 
   const handleChangeNameClick = (): void => {
     setIsEditing(true);
     setPreviousName(listName);
-  };
-
-  const handleSaveEditClick = (): void => {
-    setIsEditing(false);
-    updateListName(listName, listId);
   };
 
   const handleCancelEditClick = (): void => {

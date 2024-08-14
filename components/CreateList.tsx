@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Search from './Search';
 
 type Props = {
-  listId: bigint;
+  listId: string;
 };
 
 const GOOGLE_VOLUME_API = 'https://www.googleapis.com/books/v1/volumes';

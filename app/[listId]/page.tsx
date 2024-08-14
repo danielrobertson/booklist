@@ -16,7 +16,7 @@ export default async function ListPage({
   // prisma query list_item join list_id from lists table where list_id = listId
   const list = await prisma.list.findFirst({
     where: {
-      external_id: listId,
+      id: listId,
     },
     include: {
       list_item: {

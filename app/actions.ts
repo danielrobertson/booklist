@@ -1,8 +1,17 @@
 'use server';
 
-import prisma from '../prisma/db';
+import { db } from '../db';
 
-export async function updateListName(newName: string, listId: bigint) {
+export async function createList() {
+  try {
+    const newList = await db.console.log('🚀 ~ createList ~ newList:', newList);
+    return newList.id;
+  } catch (error) {
+    console.error('Failed to create list: ', error);
+  }
+}
+
+export async function updateListName(newName: string, listId: string) {
   try {
     await prisma.list.update({
       where: {
@@ -13,6 +22,6 @@ export async function updateListName(newName: string, listId: bigint) {
       },
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
