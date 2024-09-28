@@ -1,22 +1,21 @@
 'use client';
 
-import { Button } from '@radix-ui/themes';
 import React, { useEffect, useState } from 'react';
 
 type Props = {
-  externalListId: string;
+  listId: string;
 };
 
-function ShareLink({ externalListId }: Props) {
+function ShareLink({ listId }: Props) {
   const [isCopied, setIsCopied] = useState(false);
-  const [url, setUrl] = useState(`book-list.io/${externalListId}`);
+  const [url, setUrl] = useState(`book-list.io/${listId}`);
 
   useEffect(() => {
-    const copyableUrl = `${window.location.host}/${externalListId}`;
+    const copyableUrl = `${window.location.host}/${listId}`;
     if (copyableUrl !== url) {
       setUrl(copyableUrl);
     }
-  }, [externalListId]);
+  }, [listId]);
 
   const handleClick = () => {
     navigator.clipboard
