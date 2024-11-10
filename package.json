@@ -15,6 +15,9 @@
     "cf-typegen": "wrangler types"
   },
   "dependencies": {
+    "@radix-ui/react-checkbox": "^1.1.2",
+    "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-separator": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@remix-run/cloudflare": "^2.13.1",
     "@remix-run/cloudflare-pages": "^2.13.1",
@@ -26,7 +29,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwind-merge": "^2.5.4",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "vaul": "^1.1.1"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241106.0",

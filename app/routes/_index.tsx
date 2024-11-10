@@ -1,19 +1,8 @@
 import type { MetaFunction } from "@remix-run/cloudflare";
 import { useState } from "react";
+import BookResultCard from "~/components/book-result-card";
 import { SearchInput } from "~/components/search-input";
-
-interface BookResult {
-  id: string;
-  volumeInfo: {
-    title: string;
-    authors?: string[];
-    description?: string;
-    imageLinks?: {
-      thumbnail: string;
-    };
-    publishedDate?: string;
-  };
-}
+import { BookResult } from "~/types";
 
 export const meta: MetaFunction = () => {
   return [
@@ -33,6 +22,7 @@ export default function Index() {
     }
 
     try {
+      // TODO: add KV caching layer here
       const response = await fetch(
         `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(
           query
@@ -49,7 +39,6 @@ export default function Index() {
 
       setResults(data.items || []);
       setError(null);
-      // TODO: add KV caching layer here
     } catch (error) {
       console.error("Error searching books:", error);
       setError("Failed to search books. Please try again.");
@@ -72,40 +61,7 @@ export default function Index() {
 
           <div className="mt-8 space-y-6">
             {results.map((book) => (
-              <div
-                key={book.id}
-                className="border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
-              >
-                <div className="flex gap-4">
-                  {book.volumeInfo.imageLinks?.thumbnail && (
-                    <img
-                      src={book.volumeInfo.imageLinks.thumbnail}
-                      alt={book.volumeInfo.title}
-                      className="w-24 h-32 object-cover rounded"
-                    />
-                  )}
-                  <div>
-                    <h2 className="text-xl font-semibold">
-                      {book.volumeInfo.title}
-                    </h2>
-                    {book.volumeInfo.authors && (
-                      <p className="text-gray-600">
-                        {book.volumeInfo.authors.join(", ")}
-                      </p>
-                    )}
-                    {book.volumeInfo.publishedDate && (
-                      <p className="text-gray-500 text-sm">
-                        Published: {book.volumeInfo.publishedDate}
-                      </p>
-                    )}
-                    {book.volumeInfo.description && (
-                      <p className="text-gray-700 mt-2 line-clamp-2">
-                        {book.volumeInfo.description}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div>
+              <BookResultCard key={book.id} book={book} />
             ))}
           </div>
         </main>
