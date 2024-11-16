@@ -6,9 +6,10 @@ import { Button } from "./ui/button";
 
 type Props = {
   book: BookResult;
+  addToList?: (book: BookResult) => void;
 };
 
-export default function BookResultCard({ book }: Props) {
+export default function BookResultCard({ book, addToList }: Props) {
   const [openDropdown, setOpenDropdown] = React.useState<string | null>(null);
   const [userLists] = React.useState([
     { id: 1, name: "Reading List" },
@@ -20,17 +21,17 @@ export default function BookResultCard({ book }: Props) {
       key={book.id}
       className="border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
     >
-      <div className="flex gap-4 justify-between">
-        <div className="flex gap-4">
+      <div className="flex flex-col lg:flex-row gap-4">
+        <div className="flex gap-4 w-full">
           {book.volumeInfo.imageLinks?.thumbnail && (
             <img
               src={book.volumeInfo.imageLinks.thumbnail}
               alt={book.volumeInfo.title}
-              className="w-24 h-32 object-cover rounded"
+              className="w-24 h-32 object-cover rounded flex-shrink-0"
             />
           )}
 
-          <div>
+          <div className="min-w-0 flex-grow">
             <h2 className="text-xl font-semibold">{book.volumeInfo.title}</h2>
             {book.volumeInfo.authors && (
               <p className="text-gray-600">
@@ -49,10 +50,16 @@ export default function BookResultCard({ book }: Props) {
             )}
           </div>
         </div>
-        <div className="relative">
-          <AddToListDrawer
-            trigger={<Button variant="outline">Add to List</Button>}
-          />
+        <div className="relative w-full lg:w-auto lg:flex-shrink-0">
+          {addToList && (
+            <Button
+              variant="outline"
+              className="w-full lg:w-auto"
+              onClick={() => addToList(book)}
+            >
+              Add to List
+            </Button>
+          )}
           {openDropdown === book.id && (
             <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border">
               <div className="py-1">
