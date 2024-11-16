@@ -20,14 +20,17 @@ export function BookSearchWithListComponent() {
   const [isLoading, setIsLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const handleSearch = async (query: string) => {
     if (!query.trim()) {
       setSearchResults([]);
+      setHasSearched(false);
       return;
     }
 
     try {
+      setIsLoading(true);
       // TODO: add KV caching layer here
       const response = await fetch(
         `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(
@@ -44,9 +47,13 @@ export function BookSearchWithListComponent() {
       }
 
       setSearchResults(data.items || []);
+      setHasSearched(true);
     } catch (error) {
       console.error("Error searching books:", error);
       setSearchResults([]);
+      setHasSearched(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -162,6 +169,22 @@ export function BookSearchWithListComponent() {
         </div>
       </form>
 
+      {!hasSearched && !isLoading && (
+        <div className="text-center py-12">
+          <BookOpen className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+          <h2 className="text-xl font-semibold mb-2">Start Your Book List</h2>
+          <p className="text-gray-600 mb-4">
+            Search for books above to create your shareable reading list
+          </p>
+          <div className="max-w-md mx-auto p-4 bg-secondary/50 rounded-lg">
+            <p className="text-sm text-muted-foreground">
+              Tip: Try searching for your favorite author or book title to get
+              started
+            </p>
+          </div>
+        </div>
+      )}
+
       {searchResults.length > 0 && (
         <>
           <h2 className="text-xl font-semibold mb-4">Search Results</h2>
@@ -179,7 +202,7 @@ export function BookSearchWithListComponent() {
         </>
       )}
 
-      {searchResults.length === 0 && query && !isLoading && (
+      {searchResults.length === 0 && hasSearched && !isLoading && (
         <p className="text-center text-gray-500">
           No books found. Try another search term.
         </p>

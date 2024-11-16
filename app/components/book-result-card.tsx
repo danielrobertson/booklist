@@ -13,7 +13,7 @@ export default function BookResultCard({ book, addToList, isAdded }: Props) {
   return (
     <div
       key={book.id}
-      className="border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+      className="border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow w-full"
     >
       <div className="flex flex-col lg:flex-row gap-4">
         {/* Modified mobile layout structure */}
