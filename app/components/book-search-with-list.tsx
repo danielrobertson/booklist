@@ -53,6 +53,8 @@ export function BookSearchWithListComponent() {
   const addToList = (book: BookResult) => {
     if (!bookList.some((item) => item.id === book.id)) {
       setBookList((prevList) => [...prevList, book]);
+    } else {
+      setBookList((prevList) => prevList.filter((item) => item.id !== book.id));
     }
   };
 
@@ -88,9 +90,9 @@ export function BookSearchWithListComponent() {
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button variant="ghost" className="relative p-2">
-              <BookOpen className="h-6 w-6 text-primary" />
+              <BookOpen className="h-6 w-6" />
               {bookList.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                <span className="absolute -top-[4px] -right-[4px] bg-primary text-zinc-50 rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-medium">
                   {bookList.length}
                 </span>
               )}
@@ -100,24 +102,8 @@ export function BookSearchWithListComponent() {
             <DialogHeader>
               <DialogTitle>Your Book List</DialogTitle>
             </DialogHeader>
-            <div className="mt-4 max-h-[60vh] overflow-y-auto">
-              {bookList.length > 0 ? (
-                <ul className="space-y-2">
-                  {bookList.map((book) => (
-                    <li
-                      key={book.id}
-                      className="flex justify-between items-center border-b pb-2"
-                    >
-                      <BookResultCard book={book} />
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>Your book list is empty. Add some books!</p>
-              )}
-            </div>
             <div className="mt-4">
-              <Button onClick={copyShareUrl} className="w-full">
+              <Button onClick={copyShareUrl} className="w-full mb-4">
                 {isCopied ? (
                   <>
                     <Check className="h-4 w-4 mr-2" />
@@ -130,6 +116,22 @@ export function BookSearchWithListComponent() {
                   </>
                 )}
               </Button>
+              <div className="max-h-[60vh] overflow-y-auto">
+                {bookList.length > 0 ? (
+                  <ul className="space-y-2">
+                    {bookList.map((book) => (
+                      <li
+                        key={book.id}
+                        className="flex justify-between items-center"
+                      >
+                        <BookResultCard book={book} />
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>Your book list is empty. Add some books!</p>
+                )}
+              </div>
             </div>
           </DialogContent>
         </Dialog>
@@ -161,18 +163,20 @@ export function BookSearchWithListComponent() {
       </form>
 
       {searchResults.length > 0 && (
-        <Card>
-          <CardContent className="p-4">
-            <h2 className="text-xl font-semibold mb-4">Search Results</h2>
-            <ul className="space-y-4">
-              {searchResults.map((book) => (
-                <li key={book.id} className="flex justify-between items-center">
-                  <BookResultCard book={book} addToList={addToList} />
-                </li>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
+        <>
+          <h2 className="text-xl font-semibold mb-4">Search Results</h2>
+          <ul className="space-y-4">
+            {searchResults.map((book) => (
+              <li key={book.id} className="flex justify-between items-center">
+                <BookResultCard
+                  book={book}
+                  addToList={addToList}
+                  isAdded={bookList.some((item) => item.id === book.id)}
+                />
+              </li>
+            ))}
+          </ul>
+        </>
       )}
 
       {searchResults.length === 0 && query && !isLoading && (
