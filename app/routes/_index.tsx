@@ -1,4 +1,4 @@
-import type { MetaFunction } from "@remix-run/cloudflare";
+import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/cloudflare";
 import { BookSearchWithListComponent } from "~/components/book-search-with-list";
 
 export const meta: MetaFunction = () => {
@@ -6,6 +6,13 @@ export const meta: MetaFunction = () => {
     { title: "Book Search" },
     { name: "description", content: "Search for books using Google Books API" },
   ];
+};
+export const loader = async ({ context }: LoaderFunctionArgs) => {
+  const { env } = context.cloudflare;
+  await env.BOOKLISTS_KV.put("hello", "world");
+  const value = await env.BOOKLISTS_KV.get("hello");
+  console.log("🚀 ~ loader ~ value:", value);
+  return { value };
 };
 
 export default function Index() {
