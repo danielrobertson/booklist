@@ -3,6 +3,12 @@ name = "booklists-cf"
 compatibility_date = "2024-11-06"
 pages_build_output_dir = "./build/client"
 
+# Bind a KV Namespace. Use KV as persistent storage for small key-value pairs.
+# Docs: https://developers.cloudflare.com/pages/functions/bindings/#kv-namespaces
+[[kv_namespaces]]
+binding = "BOOKLISTS_KV"
+id = "882fb713ec44491ab782473ebf2835d8"
+
 # Automatically place your workloads in an optimal location to minimize latency.
 # If you are running back-end logic in a Pages Function, running it closer to your back-end infrastructure
 # rather than the end user may result in better performance.
@@ -37,12 +43,6 @@ pages_build_output_dir = "./build/client"
 # name = "MY_DURABLE_OBJECT"
 # class_name = "MyDurableObject"
 # script_name = 'my-durable-object'
-
-# Bind a KV Namespace. Use KV as persistent storage for small key-value pairs.
-# Docs: https://developers.cloudflare.com/pages/functions/bindings/#kv-namespaces
-# [[kv_namespaces]]
-# binding = "MY_KV_NAMESPACE"
-# id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 # Bind a Queue producer. Use this binding to schedule an arbitrary task that may be processed later by a Queue consumer.
 # Docs: https://developers.cloudflare.com/pages/functions/bindings/#queue-producers
