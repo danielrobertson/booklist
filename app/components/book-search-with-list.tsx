@@ -24,6 +24,7 @@ export function BookSearchWithListComponent() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  const [emptyUrl, setEmptyUrl] = useState("/travolta.gif");
 
   const submit = useSubmit();
   const actionData = useActionData<typeof action>();
@@ -194,10 +195,10 @@ export function BookSearchWithListComponent() {
       {!hasSearched && !isLoading && (
         <div className="text-center py-4">
           <img
-            src="/travolta.gif"
+            src={emptyUrl}
             alt="Where is everything?"
-            loading="lazy"
-            decoding="async"
+            loading="eager"
+            onError={() => setEmptyUrl("/travolta.png")}
             style={{
               margin: "0 auto",
               maxWidth: "100%",
