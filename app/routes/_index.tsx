@@ -1,18 +1,25 @@
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/cloudflare";
 import { BookSearchWithListComponent } from "~/components/book-search-with-list";
 
+import { nanoid } from "nanoid";
+
 export const meta: MetaFunction = () => {
   return [
-    { title: "Book Search" },
-    { name: "description", content: "Search for books using Google Books API" },
+    { title: "Book lists" },
+    { name: "description", content: "Search and share lists of books" },
   ];
 };
-export const loader = async ({ context }: LoaderFunctionArgs) => {
+
+export const action = async ({ context, request }: LoaderFunctionArgs) => {
+  const formData = await request.formData();
+  const books = Object.fromEntries(formData);
+  console.log("books: ", books);
+
+  const id = nanoid();
   const { env } = context.cloudflare;
-  await env.BOOKLISTS_KV.put("hello", "world");
-  const value = await env.BOOKLISTS_KV.get("hello");
-  console.log("🚀 ~ loader ~ value:", value);
-  return { value };
+  await env.BOOKLISTS_KV.put(id, JSON.stringify(books));
+
+  return { id };
 };
 
 export default function Index() {

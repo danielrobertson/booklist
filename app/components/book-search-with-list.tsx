@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
+import { Loader2, Search, BookOpen, Copy, Check } from "lucide-react";
+import { useActionData, useSubmit } from "@remix-run/react";
+
+import { action } from "~/routes/_index";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
-import { Card, CardContent } from "~/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -9,7 +12,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
-import { Loader2, Search, BookOpen, Plus, Copy, Check } from "lucide-react";
 import { BookResult } from "~/types";
 import BookResultCard from "./book-result-card";
 
@@ -21,6 +23,16 @@ export function BookSearchWithListComponent() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+
+  const submit = useSubmit();
+  const actionData = useActionData<typeof action>();
+
+  useEffect(() => {
+    if (actionData) {
+      console.log("server returned with new list:", actionData);
+      copyShareUrl(actionData.id);
+    }
+  }, [actionData]);
 
   const handleSearch = async (query: string) => {
     if (!query.trim()) {
@@ -65,20 +77,19 @@ export function BookSearchWithListComponent() {
     }
   };
 
-  const generateShareUrl = () => {
-    const bookIds = bookList.map((book) => book.id).join(",");
-    return `${window.location.origin}/shared-list?books=${bookIds}`;
+  const copyShareUrl = (id: string) => {
+    const url = `${window.location.origin}/list/${id}`;
+    navigator.clipboard.writeText(url);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
   };
 
-  const copyShareUrl = async () => {
-    const url = generateShareUrl();
-    try {
-      await navigator.clipboard.writeText(url);
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000);
-    } catch (err) {
-      console.error("Failed to copy: ", err);
-    }
+  const submitList = async () => {
+    const formData = new FormData();
+    formData.append("books", JSON.stringify(bookList));
+
+    // async post to server to create a new list and get a share url
+    submit(formData, { method: "post" });
   };
 
   useEffect(() => {
@@ -110,7 +121,7 @@ export function BookSearchWithListComponent() {
               <DialogTitle>Your Book List</DialogTitle>
             </DialogHeader>
             <div className="mt-4">
-              <Button onClick={copyShareUrl} className="w-full mb-4">
+              <Button onClick={submitList} className="w-full mb-4">
                 {isCopied ? (
                   <>
                     <Check className="h-4 w-4 mr-2" />
