@@ -26,6 +26,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
+    "copy-to-clipboard": "^3.3.3",
     "isbot": "^4.4.0",
     "lucide-react": "^0.456.0",
     "nanoid": "^5.0.9",

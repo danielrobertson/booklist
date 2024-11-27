@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Loader2, Search, BookOpen, Copy, Check } from "lucide-react";
 import { useActionData, useSubmit } from "@remix-run/react";
+import copy from "copy-to-clipboard";
 
 import { action, BOOKS_FORM_KEY } from "~/routes/_index";
 import { Input } from "~/components/ui/input";
@@ -79,34 +80,9 @@ export function BookSearchWithListComponent() {
 
   const copyShareUrl = (id: string) => {
     const url = `${window.location.origin}/lists/${id}`;
-
-    // iOS specific workaround to copy text
-    const textarea = document.createElement("textarea");
-    textarea.value = url;
-    textarea.style.position = "fixed"; // Avoid scrolling
-    textarea.style.opacity = "0";
-    document.body.appendChild(textarea);
-
-    textarea.contentEditable = "true";
-    textarea.readOnly = false;
-    textarea.select();
-    textarea.setSelectionRange(0, 99999);
-
-    try {
-      // Try modern API first that most browsers support
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(url);
-      } else {
-        // Fallback to execCommand
-        document.execCommand("copy");
-      }
-      setIsCopied(true);
-    } catch (err) {
-      console.error("Failed to copy:", err);
-    } finally {
-      document.body.removeChild(textarea);
-      setTimeout(() => setIsCopied(false), 5000);
-    }
+    copy(url);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 5000);
   };
 
   const submitList = async () => {
