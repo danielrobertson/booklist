@@ -1,4 +1,5 @@
 import React from "react";
+import { Plus } from "lucide-react";
 import { LinksFunction, LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { json } from "@remix-run/node";
 import {
@@ -12,7 +13,6 @@ import { BookResult } from "~/types";
 import BookResultCard from "~/components/book-result-card";
 
 import "./../tailwind.css";
-import { ArrowRight, Plus } from "lucide-react";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -30,11 +30,14 @@ export const links: LinksFunction = () => [
 export async function loader({ context, params }: LoaderFunctionArgs) {
   const { env } = context.cloudflare;
   const booklistStr = await env.BOOKLISTS_KV.get(params.listId ?? "", "json");
+
   if (!booklistStr || booklistStr === null) {
     throw new Response("", { status: 404 });
   }
+
   const booklist = JSON.parse(booklistStr);
   console.log("🚀 ~ loader ~ ", booklist[0]);
+
   return json(booklist as BookResult[]);
 }
 

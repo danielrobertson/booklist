@@ -79,9 +79,34 @@ export function BookSearchWithListComponent() {
 
   const copyShareUrl = (id: string) => {
     const url = `${window.location.origin}/lists/${id}`;
-    navigator.clipboard.writeText(url);
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 2000);
+
+    // iOS specific workaround to copy text
+    const textarea = document.createElement("textarea");
+    textarea.value = url;
+    textarea.style.position = "fixed"; // Avoid scrolling
+    textarea.style.opacity = "0";
+    document.body.appendChild(textarea);
+
+    textarea.contentEditable = "true";
+    textarea.readOnly = false;
+    textarea.select();
+    textarea.setSelectionRange(0, 99999);
+
+    try {
+      // Try modern API first that most browsers support
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url);
+      } else {
+        // Fallback to execCommand
+        document.execCommand("copy");
+      }
+      setIsCopied(true);
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    } finally {
+      document.body.removeChild(textarea);
+      setTimeout(() => setIsCopied(false), 5000);
+    }
   };
 
   const submitList = async () => {
