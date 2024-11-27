@@ -12,6 +12,7 @@ import { BookResult } from "~/types";
 import BookResultCard from "~/components/book-result-card";
 
 import "./../tailwind.css";
+import { ArrowRight, Plus } from "lucide-react";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -51,9 +52,17 @@ export default function ListViewPage() {
       </head>
       <body>
         <div className="flex h-screen justify-center">
-          <div className="flex flex-col items-center gap-16 w-full max-w-3xl px-4">
+          <div className="flex flex-col w-full max-w-3xl px-4">
+            <header className="w-full flex justify-end py-2">
+              <a
+                href="/"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 border rounded-md px-3 py-1.5 hover:border-foreground"
+              >
+                <Plus className="w-4 h-4" /> Create your own list
+              </a>
+            </header>
             <main>
-              <ul className="mt-5 space-y-2">
+              <ul className="mt-3 space-y-2">
                 {booklist.map((book) => (
                   <li
                     key={book.id}
