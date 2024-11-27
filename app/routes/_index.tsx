@@ -3,6 +3,8 @@ import { BookSearchWithListComponent } from "~/components/book-search-with-list"
 
 import { nanoid } from "nanoid";
 
+export const BOOKS_FORM_KEY = "books";
+
 export const meta: MetaFunction = () => {
   return [
     { title: "Book lists" },
@@ -12,8 +14,8 @@ export const meta: MetaFunction = () => {
 
 export const action = async ({ context, request }: LoaderFunctionArgs) => {
   const formData = await request.formData();
-  const books = Object.fromEntries(formData);
-  console.log("books: ", books);
+  const books = formData.get(BOOKS_FORM_KEY);
+  console.log("books submitted: ", books);
 
   const id = nanoid();
   const { env } = context.cloudflare;

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Loader2, Search, BookOpen, Copy, Check } from "lucide-react";
 import { useActionData, useSubmit } from "@remix-run/react";
 
-import { action } from "~/routes/_index";
+import { action, BOOKS_FORM_KEY } from "~/routes/_index";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import {
@@ -78,7 +78,7 @@ export function BookSearchWithListComponent() {
   };
 
   const copyShareUrl = (id: string) => {
-    const url = `${window.location.origin}/list/${id}`;
+    const url = `${window.location.origin}/lists/${id}`;
     navigator.clipboard.writeText(url);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
@@ -86,7 +86,7 @@ export function BookSearchWithListComponent() {
 
   const submitList = async () => {
     const formData = new FormData();
-    formData.append("books", JSON.stringify(bookList));
+    formData.append(BOOKS_FORM_KEY, JSON.stringify(bookList));
 
     // async post to server to create a new list and get a share url
     submit(formData, { method: "post" });
