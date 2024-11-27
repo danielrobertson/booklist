@@ -78,11 +78,21 @@ export function BookSearchWithListComponent() {
     }
   };
 
-  const copyShareUrl = (id: string) => {
+  const copyShareUrl = async (id: string) => {
     const url = `${window.location.origin}/lists/${id}`;
-    copy(url);
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 5000);
+
+    try {
+      await navigator.share({
+        url,
+      });
+    } catch (err) {
+      // User canceled or share failed
+      console.error("Share failed");
+      copy(url);
+    } finally {
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 5000);
+    }
   };
 
   const submitList = async () => {
@@ -182,12 +192,18 @@ export function BookSearchWithListComponent() {
       </form>
 
       {!hasSearched && !isLoading && (
-        <div className="text-center py-12">
-          <BookOpen className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-          <h2 className="text-xl font-semibold mb-2">Start Your Book List</h2>
-          <p className="text-gray-600 mb-4">
-            Search for books above to create your shareable reading list
-          </p>
+        <div className="text-center py-4">
+          <img
+            src="/travolta.gif"
+            alt="Where is everything?"
+            loading="lazy"
+            decoding="async"
+            style={{
+              margin: "0 auto",
+              maxWidth: "100%",
+              height: "5rem",
+            }}
+          />
           <div className="max-w-md mx-auto p-4 bg-secondary/50 rounded-lg">
             <p className="text-sm text-muted-foreground">
               Tip: Try searching for your favorite author or book title to get

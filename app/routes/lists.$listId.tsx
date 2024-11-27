@@ -56,7 +56,7 @@ export default function ListViewPage() {
       <body>
         <div className="flex h-screen justify-center">
           <div className="flex flex-col w-full max-w-3xl px-4">
-            <header className="w-full flex justify-end py-2">
+            <header className="w-full flex justify-end py-3">
               <a
                 href="/"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 border rounded-md px-3 py-1.5 hover:border-foreground"
