@@ -2,6 +2,7 @@ import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/cloudflare";
 import { BookSearchWithListComponent } from "~/components/book-search-with-list";
 
 import { nanoid } from "nanoid";
+import { StickyHeader } from "~/components/sticky-header";
 
 export const BOOKS_FORM_KEY = "books";
 
@@ -27,9 +28,9 @@ export const action = async ({ context, request }: LoaderFunctionArgs) => {
 export default function Index() {
   return (
     <div className="flex h-screen justify-center">
-      <div className="flex flex-col items-center gap-16 w-full max-w-3xl px-4">
-        <header className="flex flex-col items-center gap-9"></header>
-        <main className="w-full">
+      <div className="flex flex-col items-center gap-16 w-full max-w-3xl">
+        <StickyHeader />
+        <main className="container mx-auto max-w-3xl">
           <BookSearchWithListComponent />
         </main>
       </div>

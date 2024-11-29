@@ -59,7 +59,7 @@ export default function ListViewPage() {
             <header className="w-full flex justify-end py-3">
               <a
                 href="/"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 border rounded-md px-3 py-1.5 hover:border-foreground"
+                className="w-full md:w-fit text-sm text-secondary hover:text-foreground transition-colors flex items-center justify-center gap-1 border rounded-md px-3 py-1.5 hover:border-foreground"
               >
                 <Plus className="w-4 h-4" /> Create your own list
               </a>
