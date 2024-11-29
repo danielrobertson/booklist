@@ -7,7 +7,7 @@ export const BOOKS_FORM_KEY = "books";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Book lists" },
+    { title: "ShareReads" },
     { name: "description", content: "Search and share lists of books" },
   ];
 };

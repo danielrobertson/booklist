@@ -37,22 +37,22 @@ export default function BookResultCard({ book, addToList, isAdded }: Props) {
                 </p>
               )}
               {book.volumeInfo.publishedDate && (
-                <p className="text-gray-500 text-sm text-center sm:text-left">
+                <p className="text-gray-500 text-xs text-center sm:text-left">
                   Published: {book.volumeInfo.publishedDate}
                 </p>
               )}
-              {book.volumeInfo.description && (
-                <p className="text-gray-700 mt-2 line-clamp-3 sm:line-clamp-2">
+              {book.volumeInfo.description && addToList && (
+                <p className="text-xs text-gray-600 mt-2 line-clamp-3 sm:line-clamp-2">
                   {book.volumeInfo.description}
                 </p>
               )}
             </div>
           </div>
         </div>
-        <div className="relative w-full lg:w-auto lg:flex-shrink-0">
-          {addToList && (
+        {addToList && (
+          <div className="relative w-full lg:w-auto lg:flex-shrink-0">
             <Button
-              variant={isAdded ? "secondary" : "outline"}
+              variant={"outline"}
               className="w-full lg:w-auto"
               onClick={() => addToList(book)}
             >
@@ -68,8 +68,8 @@ export default function BookResultCard({ book, addToList, isAdded }: Props) {
                 </>
               )}
             </Button>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
