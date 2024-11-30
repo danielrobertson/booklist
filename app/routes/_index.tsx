@@ -59,14 +59,13 @@ export default function Index() {
     const url = `${window.location.origin}/lists/${id}`;
 
     try {
-      if (
-        /iPhone|iPad|iPod/.test(navigator.userAgent) &&
-        /Safari/.test(navigator.userAgent)
-      ) {
+      // mobile browsers prefer to use the share api
+      if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
         await navigator.share({
           url,
         });
       } else {
+        // desktop browsers
         copy(url);
       }
     } catch (err) {
