@@ -18,6 +18,8 @@ import {
 } from "~/components/ui/dialog";
 import { useBooklist } from "~/components/contexts/BooklistContext";
 
+import { mongodb } from "./../utils/db.server";
+
 export const BOOKS_FORM_KEY = "books";
 
 export const meta: MetaFunction = () => {
@@ -25,6 +27,21 @@ export const meta: MetaFunction = () => {
     { title: "ShareReads" },
     { name: "description", content: "Search and share lists of books" },
   ];
+};
+
+export const loader = async () => {
+  try {
+    const db = await mongodb.db("share-reads");
+    const collection = await db.collection("lists");
+    const records = await collection
+      .find({ test: { $exists: true } })
+      .toArray();
+    console.log("🚀 ~ loader ~ records:", records);
+    return null;
+  } catch (error) {
+    console.error("MongoDB connection error:", error);
+    return null;
+  }
 };
 
 export const action = async ({ context, request }: LoaderFunctionArgs) => {
