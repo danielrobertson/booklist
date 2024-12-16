@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Loader2, Search } from "lucide-react";
+import { useFetcher } from "@remix-run/react";
 
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
@@ -7,8 +8,9 @@ import { BookResult } from "~/types";
 import BookResultCard from "./book-result-card";
 import { useBooklist } from "./contexts/BooklistContext";
 
-export function BookSearchWithListComponent() {
+export function BookSearchWithListComponent({ listId }: { listId: string }) {
   const { bookList, setBookList } = useBooklist();
+  const addToListFetcher = useFetcher();
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState<BookResult[]>([]);
 
@@ -54,8 +56,17 @@ export function BookSearchWithListComponent() {
   const addToList = (book: BookResult) => {
     if (!bookList.some((item) => item.id === book.id)) {
       setBookList((prevList) => [...prevList, book]);
+
+      addToListFetcher.submit(
+        { book: JSON.stringify(book) },
+        {
+          method: "PUT",
+          action: `/lists/${listId}/book`,
+        }
+      );
     } else {
       setBookList((prevList) => prevList.filter((item) => item.id !== book.id));
+      // TODO: remove from list
     }
   };
 

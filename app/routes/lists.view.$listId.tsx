@@ -1,5 +1,7 @@
 import React from "react";
 import { Plus } from "lucide-react";
+import invariant from "tiny-invariant";
+
 import { LinksFunction, LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { json } from "@remix-run/node";
 import {
@@ -9,11 +11,12 @@ import {
   useLoaderData,
   ScrollRestoration,
 } from "@remix-run/react";
-import { BookResult } from "~/types";
 import BookResultCard from "~/components/book-result-card";
 
 import "./../tailwind.css";
 import { StickyHeader } from "~/components/sticky-header";
+import { ObjectId } from "mongodb";
+import { COLLECTIONS, DB_NAME, ListModel, mongodb } from "~/utils/db.server";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -28,23 +31,19 @@ export const links: LinksFunction = () => [
   },
 ];
 
-export async function loader({ context, params }: LoaderFunctionArgs) {
-  const { env } = context.cloudflare;
-  const booklistStr = await env.BOOKLISTS_KV.get(params.listId ?? "", "json");
+export async function loader({ params }: LoaderFunctionArgs) {
+  invariant(params.listId, "Expected params.listId");
 
-  if (!booklistStr || booklistStr === null) {
-    throw new Response("", { status: 404 });
-  }
+  const db = await mongodb.db(DB_NAME);
+  const collection = await db.collection<ListModel>(COLLECTIONS.LISTS);
+  const list = await collection.findOne({ _id: new ObjectId(params.listId) });
 
-  const booklist = JSON.parse(booklistStr);
-  console.log("🚀 ~ loader ~ ", booklist[0]);
-
-  return json(booklist as BookResult[]);
+  return json({ list });
 }
 
 export default function ListViewPage() {
-  const booklist = useLoaderData<typeof loader>();
-  console.log("🚀 ~ ListViewPage ~ data:", booklist);
+  const { list } = useLoaderData<typeof loader>();
+  console.log("🚀 ~ ListViewPage ~ data:", list);
 
   return (
     <html lang="en">
@@ -67,7 +66,7 @@ export default function ListViewPage() {
             </StickyHeader>
             <main>
               <ul className="mt-3 space-y-2">
-                {booklist.map((book) => (
+                {list?.books.map((book) => (
                   <li
                     key={book.id}
                     className="flex justify-between items-center"

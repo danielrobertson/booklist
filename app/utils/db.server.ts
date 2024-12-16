@@ -1,4 +1,16 @@
-import { BSON, MongoClient } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
+import { BookResult } from "~/types";
+
+export const DB_NAME = "share-reads";
+
+export enum COLLECTIONS {
+  LISTS = "lists",
+}
+
+export interface ListModel {
+  _id: ObjectId | string;
+  books: BookResult[];
+}
 
 const uri = process.env.MONGODB_URI!;
 let mongodb: MongoClient;
@@ -16,7 +28,5 @@ if (process.env.NODE_ENV === "production") {
   }
   mongodb = global.__db;
 }
-
-const ObjectId = BSON.ObjectId;
 
 export { mongodb, ObjectId };
