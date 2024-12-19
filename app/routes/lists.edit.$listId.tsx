@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import copy from "copy-to-clipboard";
-import { nanoid } from "nanoid";
 import { BookOpen, Check, Copy } from "lucide-react";
 import invariant from "tiny-invariant";
 
