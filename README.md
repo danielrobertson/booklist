@@ -4,11 +4,9 @@ Quickly create and share lists of books with anyone
 
 🚀 https://sharereads.xyz/
 
-Build using Cloudflare Pages, Cloudflare KV, and MongoDB 
+Built using Cloudflare Pages, Cloudflare KV, and MongoDB 
 
-![image](https://github.com/user-attachments/assets/109eca79-ac83-42a1-81b4-317071baa37d)
-![image](https://github.com/user-attachments/assets/92c5b2c1-e03e-483f-87c3-986440e14e32)
-![image](https://github.com/user-attachments/assets/e67f715a-0aac-4524-9239-f67a2db2bdb7)
+![Kapture 2024-12-20 at 16 17 22](https://github.com/user-attachments/assets/e0faef8f-2323-4e06-8c7a-3f5093bc4b5d)
 
 ## Development
 
